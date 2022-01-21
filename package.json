@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A version of lumines using JS,html5 canvas and css",
   "type": "module",
-  "main": "lumines.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
