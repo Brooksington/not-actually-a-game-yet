@@ -38,7 +38,7 @@ const board=generateBoard(32,20);
 
 //draws a low alpha solid black background with every single frame, the lower the value, you get more of the trailing effect/motion blur. Higher for a lesser effect.
 const drawBlackground = () => {
-    BBContext.fillStyle='rgba(0,0,0,0.2)';
+    BBContext.fillStyle='rgba(0,0,0,0.3)';
     BBContext.fillRect(0,0,window.innerWidth,window.innerHeight);
 }
 
@@ -56,8 +56,8 @@ const particleManipulation = () => {
     Particle.elminateParticles(rotationParticles,0.2,blockSize*3);
 }
 
-let gradientIncrementer=0.1;
-let gradientDirection = 'up';
+let gradientPosition=0.1;
+let gradientIncrementer = 0.01;
 //global variables denoting board position and bounds of game board.
 const yOffset=25;
 let lineStartXAxis=Math.round(xCenter-(blockSize*16));
@@ -71,13 +71,10 @@ const renderBoard = () => {
     //board gradient definition and variables
     const gradient=BBContext.createLinearGradient(xCenter,window.innerHeight,xCenter,0);
     gradient.addColorStop(0,"hsla(264, 100%, 39%, 0.8)");
-    gradient.addColorStop(gradientIncrementer, "hsla(179, 100%, 100%, 1)");
+    gradient.addColorStop(gradientPosition, "hsla(179, 100%, 100%, 1)");
     gradient.addColorStop(1,"hsla(264, 100%, 39%, 0.8)");
-    if(gradientIncrementer>=0.95) gradientDirection='down';
-    if(gradientIncrementer<=0.05) gradientDirection='up';
-    if(gradientDirection === 'up') gradientIncrementer+=0.01;
-    if(gradientDirection === 'down') gradientIncrementer-=0.01;
-
+    if(gradientPosition>0.96||gradientPosition<0.04) gradientIncrementer*=-1;
+    gradientPosition+=gradientIncrementer;
     //draw vertical lines on board, spacing determined by blockSize variable
     for(let i=0;i<(board[0].length/2)+1;i++){
         BBContext.beginPath();
@@ -134,7 +131,7 @@ const drawScanLine = () =>{
     }
 }
 
-const cascade = () => {
+/*const cascade = () => {
     for(let i=0;i<board.length-1;i++){
         for(let j=0;j<board[i].length;j++){
             if(board[i][j]&&!board[i+1][j]){
@@ -142,7 +139,7 @@ const cascade = () => {
             }
         }
     }
-}
+}*/
 
 const collide = () => {
     controlBar.toggleControl();
@@ -150,7 +147,7 @@ const collide = () => {
     playBlock.xPos = xCenter;
     playBlock.yPos = lineStartYAxis-(2*blockSize);
     upcomingBlocks();
-    cascade();
+    //cascade();
 }
 
 const draw = () => {

@@ -87,7 +87,7 @@ export class Block {
     }
 
     moveRight(gameBoard,blockSize,maxX,minX,minY,inControl){
-        if(this.xPos+(2*blockSize)>maxX+2) return;
+        if(this.xPos+(2*blockSize)>maxX-2) return;
         if(!inControl&&gameBoard[this.boardPositionY][this.boardPositionX+2]) return;
         if(!inControl) this.clearPreviousPosition(gameBoard,blockSize,minX,minY);
         this.xPos+=blockSize;
@@ -103,7 +103,7 @@ export class Block {
     }
 
     drop(gameBoard,blockSize,maxY,minX,minY,collide){
-        if(this.yPos+blockSize*6>maxY+2){
+        if(this.yPos+blockSize*2>maxY+2||this.boardPositionY>=18){
             this.clearPreviousPosition(gameBoard,blockSize,minX,minY);
             this.yPos=maxY-2*blockSize;
             this.updatePosition(gameBoard,blockSize,minX,minY);
@@ -111,8 +111,10 @@ export class Block {
             return;
         }
         this.clearPreviousPosition(gameBoard,blockSize,minX,minY);
-        this.yPos+=blockSize*5;
+        this.yPos+=blockSize;
         this.updatePosition(gameBoard,blockSize,minX,minY);
+        console.log(this.yPos);
+        console.log(maxY);
     }
 
     upDebug(gameBoard,blockSize,minX,minY){
